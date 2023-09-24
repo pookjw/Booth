@@ -106,7 +106,7 @@ final class EffectsView: UIView {
     }
     
     private func sampleBufferDidChange() {
-        Task(priority: .userInitiated) { [weak self, sampleBuffer, viewModel] in
+        Task.detached(priority: .userInitiated) { [weak self, sampleBuffer, viewModel] in
             let pixelBuffer: CVPixelBuffer?
             if let sampleBuffer: CMSampleBuffer {
                 pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
