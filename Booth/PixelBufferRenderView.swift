@@ -21,32 +21,12 @@ final class PixelBufferRenderView: UIView {
 //            render()
 //        }
 //    }
-    private let renderer: Renderer
-    private let mtkView: MTKView
+    private let renderer: Renderer = try! .init()
     private var interfaceOrientationRegistration: NSObjectProtocol?
-//    private var metalLayer: CAMetalLayer { layer as! CAMetalLayer }
-//    
-//    override class var layerClass: AnyClass {
-//        CAMetalLayer.self
-//    }
+    private var metalLayer: CAMetalLayer { layer as! CAMetalLayer }
     
-    init() {
-        mtkView = .init(frame: .null)
-        renderer = try! .init(mtkView: mtkView)
-        super.init(frame: .null)
-        addSubview(mtkView)
-        mtkView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            mtkView.topAnchor.constraint(equalTo: topAnchor),
-            mtkView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            mtkView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            mtkView.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
-    }
-    
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override class var layerClass: AnyClass {
+        CAMetalLayer.self
     }
     
     override func didMoveToWindow() {
@@ -64,25 +44,22 @@ final class PixelBufferRenderView: UIView {
     }
     
     private func render() {
-        Task.detached(priority: .userInitiated) { [renderer, pixelBuffer, mtkView] in
+        Task.detached(priority: .userInitiated) { [renderer, pixelBuffer, metalLayer] in
             guard let pixelBuffer: CVPixelBuffer else { return }
-            await renderer.draw(pixelBuffer: pixelBuffer)
+            await renderer.draw(pixelBuffer: pixelBuffer, in: metalLayer)
         }
     }
 }
 
 extension PixelBufferRenderView {
-    fileprivate actor Renderer: NSObject {
-        private let mtkView: MTKView
+    fileprivate actor Renderer {
         private let device: MTLDevice
         private let sampler: MTLSamplerState
         private let renderPipelineState: MTLRenderPipelineState
         private let commandQueue: MTLCommandQueue
         private let textureCache: CVMetalTextureCache
         
-        @MainActor
-        init(mtkView: MTKView) throws {
-            self.mtkView = mtkView
+        init() throws {
             device = MTLCreateSystemDefaultDevice()!
             let library: MTLLibrary = try device.makeDefaultLibrary(bundle: .init(for: PixelBufferRenderView.self))
             
@@ -111,23 +88,14 @@ extension PixelBufferRenderView {
             let result: CVReturn = CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, device, nil, &_textureCache)
             assert(result == kCVReturnSuccess)
             textureCache = _textureCache!
-            
-            mtkView.device = device
-            mtkView.clearColor = .init(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-            mtkView.colorPixelFormat = .bgra8Unorm
         }
         
-        func draw(pixelBuffer: CVPixelBuffer) async {
-//            let drawable: CAMetalDrawable = metalLayer.nextDrawable()!
-            let data: (CAMetalDrawable?, MTLRenderPassDescriptor?) = await MainActor.run { [mtkView] in
-                (mtkView.currentDrawable, mtkView.currentRenderPassDescriptor)
+        func draw(pixelBuffer: CVPixelBuffer, in metalLayer: CAMetalLayer) async {
+            if metalLayer.device == nil {
+                metalLayer.device = device
             }
-            guard
-                let drawable: CAMetalDrawable = data.0,
-                let renderPassDescriptor: MTLRenderPassDescriptor = data.1
-            else {
-                return
-            }
+            
+            let drawable: CAMetalDrawable = metalLayer.nextDrawable()!
             
             // MARK: - Get Textures
             
@@ -192,11 +160,11 @@ extension PixelBufferRenderView {
             
             //
             
-//            let renderPassDescriptor: MTLRenderPassDescriptor = .init()
-//            renderPassDescriptor.colorAttachments[.zero].texture = drawable.texture
-//            renderPassDescriptor.colorAttachments[.zero].loadAction = .clear
-//            renderPassDescriptor.colorAttachments[.zero].storeAction = .store
-//            renderPassDescriptor.colorAttachments[.zero].clearColor = .init(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+            let renderPassDescriptor: MTLRenderPassDescriptor = .init()
+            renderPassDescriptor.colorAttachments[.zero].texture = drawable.texture
+            renderPassDescriptor.colorAttachments[.zero].loadAction = .clear
+            renderPassDescriptor.colorAttachments[.zero].storeAction = .store
+            renderPassDescriptor.colorAttachments[.zero].clearColor = .init(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
             
             let commandEncoder: MTLRenderCommandEncoder = commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
             commandEncoder.label = String(describing: self)
