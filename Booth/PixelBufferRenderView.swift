@@ -21,7 +21,7 @@ final class PixelBufferRenderView: UIView {
 //            render()
 //        }
 //    }
-    private let renderer: Renderer = try! .init()
+    private let renderer: Renderer = .init()
     private var interfaceOrientationRegistration: NSObjectProtocol?
     private var metalLayer: CAMetalLayer { layer as! CAMetalLayer }
     
@@ -53,49 +53,24 @@ final class PixelBufferRenderView: UIView {
 
 extension PixelBufferRenderView {
     fileprivate actor Renderer {
-        private let device: MTLDevice
-        private let sampler: MTLSamplerState
-        private let renderPipelineState: MTLRenderPipelineState
-        private let commandQueue: MTLCommandQueue
-        private let textureCache: CVMetalTextureCache
-        
-        init() throws {
-            device = MTLCreateSystemDefaultDevice()!
-            let library: MTLLibrary = try device.makeDefaultLibrary(bundle: .init(for: PixelBufferRenderView.self))
-            
-            let vertexFunction: MTLFunctionDescriptor = .init()
-            vertexFunction.name = "pixel_buffer_shader::vertexFunction"
-            
-            let fragmentFunction: MTLFunctionDescriptor = .init()
-            fragmentFunction.name = "pixel_buffer_shader::fragmentFunction"
-            
-            let pipelineDescriptor: MTLRenderPipelineDescriptor = .init()
-            pipelineDescriptor.colorAttachments[.zero].pixelFormat = .bgra8Unorm
-            pipelineDescriptor.vertexFunction = try library.makeFunction(descriptor: vertexFunction)
-            pipelineDescriptor.fragmentFunction = try library.makeFunction(descriptor: fragmentFunction)
-            renderPipelineState = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
-            
-            let samplerDescriptor: MTLSamplerDescriptor = .init()
-            samplerDescriptor.sAddressMode = .clampToEdge
-            samplerDescriptor.tAddressMode = .clampToEdge
-            samplerDescriptor.minFilter = .linear
-            samplerDescriptor.magFilter = .linear
-            sampler = device.makeSamplerState(descriptor: samplerDescriptor)!
-            
-            commandQueue = device.makeCommandQueue()!
-            
-            var _textureCache: CVMetalTextureCache?
-            let result: CVReturn = CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, device, nil, &_textureCache)
-            assert(result == kCVReturnSuccess)
-            textureCache = _textureCache!
-        }
+        private var didSetup: Bool = false
+        private var device: MTLDevice!
+        private var sampler: MTLSamplerState!
+        private var renderPipelineState: MTLRenderPipelineState!
+        private var commandQueue: MTLCommandQueue!
+        private var textureCache: CVMetalTextureCache!
         
         func draw(pixelBuffer: CVPixelBuffer, in metalLayer: CAMetalLayer) async {
+            try! configureIfNeeded()
+            
             if metalLayer.device == nil {
                 metalLayer.device = device
             }
             
-            let drawable: CAMetalDrawable = metalLayer.nextDrawable()!
+            guard let drawable: CAMetalDrawable = metalLayer.nextDrawable() else {
+                print("Too many requests...")
+                return
+            }
             
             // MARK: - Get Textures
             
@@ -178,6 +153,49 @@ extension PixelBufferRenderView {
             
             commandBuffer.present(drawable)
             commandBuffer.commit()
+        }
+        
+        private func configureIfNeeded() throws {
+            guard !didSetup else { return }
+            defer { didSetup = true }
+            
+            let device: MTLDevice = MTLCreateSystemDefaultDevice()!
+            let library: MTLLibrary = try device.makeDefaultLibrary(bundle: .init(for: PixelBufferRenderView.self))
+            
+            let vertexFunction: MTLFunctionDescriptor = .init()
+            vertexFunction.name = "pixel_buffer_shader::vertexFunction"
+            
+            let fragmentFunction: MTLFunctionDescriptor = .init()
+            fragmentFunction.name = "pixel_buffer_shader::fragmentFunction"
+            
+            let pipelineDescriptor: MTLRenderPipelineDescriptor = .init()
+            pipelineDescriptor.colorAttachments[.zero].pixelFormat = .bgra8Unorm
+            pipelineDescriptor.vertexFunction = try library.makeFunction(descriptor: vertexFunction)
+            pipelineDescriptor.fragmentFunction = try library.makeFunction(descriptor: fragmentFunction)
+            let renderPipelineState: MTLRenderPipelineState = try device.makeRenderPipelineState(descriptor: pipelineDescriptor)
+            
+            let samplerDescriptor: MTLSamplerDescriptor = .init()
+            samplerDescriptor.sAddressMode = .clampToEdge
+            samplerDescriptor.tAddressMode = .clampToEdge
+            samplerDescriptor.minFilter = .linear
+            samplerDescriptor.magFilter = .linear
+            let sampler: MTLSamplerState = device.makeSamplerState(descriptor: samplerDescriptor)!
+            
+            let commandQueue: MTLCommandQueue = device.makeCommandQueue()!
+            
+            var _textureCache: CVMetalTextureCache?
+            let result: CVReturn = CVMetalTextureCacheCreate(kCFAllocatorDefault, nil, device, nil, &_textureCache)
+            assert(result == kCVReturnSuccess)
+            let textureCache: CVMetalTextureCache = _textureCache!
+            
+            //
+            
+            self.device = device
+            self.sampler = sampler
+            self.renderPipelineState = renderPipelineState
+            self.sampler = sampler
+            self.commandQueue = commandQueue
+            self.textureCache = textureCache
         }
     }
 }
