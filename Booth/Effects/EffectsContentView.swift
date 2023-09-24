@@ -38,6 +38,7 @@ final class EffectsContentView: UIView, UIContentView {
     }
     
     private var renderView: PixelBufferRenderView!
+    private var pixelBufferTask: Task<Void, Never>?
     
     init(configuration: Configuration) {
         self.configuration = configuration
@@ -49,6 +50,10 @@ final class EffectsContentView: UIView, UIContentView {
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        pixelBufferTask?.cancel()
     }
     
     func supports(_ configuration: UIContentConfiguration) -> Bool {
@@ -69,13 +74,20 @@ final class EffectsContentView: UIView, UIContentView {
     }
     
     private func configurationDidChange() {
-        renderView.pixelBuffer = _configuration?.pixelBuffer
+        let pixelBufferSubject: AsyncEventSubject<CVPixelBuffer?> = _configuration.pixelBufferSubject
+        
+        pixelBufferTask?.cancel()
+        pixelBufferTask = .init { [pixelBufferSubject, renderView] in
+            for await pixelBuffer in await pixelBufferSubject.stream {
+                renderView?.pixelBuffer = pixelBuffer
+            }
+        }
     }
 }
 
 extension EffectsContentView {
     struct Configuration: UIContentConfiguration {
-        let pixelBuffer: CVPixelBuffer?
+        let pixelBufferSubject: AsyncEventSubject<CVPixelBuffer?>
         
         func makeContentView() -> UIView & UIContentView {
             EffectsContentView(configuration: self)

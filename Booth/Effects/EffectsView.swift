@@ -15,7 +15,7 @@ final class EffectsView: UIView {
             sampleBufferDidChange()
         }
     }
-    private var pixelBuffer: CVPixelBuffer?
+    private let pixelBufferSubject: AsyncEventSubject<CVPixelBuffer?> = .init()
     
     private var collectionView: UICollectionView!
     private var viewModel: EffectsViewModel!
@@ -95,8 +95,8 @@ final class EffectsView: UIView {
     }
     
     private func createCellRegistration() -> UICollectionView.CellRegistration<UICollectionViewCell, EffectsItemModel> {
-        .init { [weak self] cell, indexPath, itemIdentifier in
-            let contentConfiguration: EffectsContentView.Configuration = .init(pixelBuffer: self?.pixelBuffer)
+        .init { [pixelBufferSubject] cell, indexPath, itemIdentifier in
+            let contentConfiguration: EffectsContentView.Configuration = .init(pixelBufferSubject: pixelBufferSubject)
             cell.contentConfiguration = contentConfiguration
         }
     }
@@ -106,7 +106,7 @@ final class EffectsView: UIView {
     }
     
     private func sampleBufferDidChange() {
-        Task.detached(priority: .userInitiated) { [weak self, sampleBuffer, viewModel] in
+        Task.detached(priority: .userInitiated) { [sampleBuffer, pixelBufferSubject] in
             let pixelBuffer: CVPixelBuffer?
             if let sampleBuffer: CMSampleBuffer {
                 pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
@@ -114,10 +114,7 @@ final class EffectsView: UIView {
                 pixelBuffer = nil
             }
             
-            await MainActor.run { [weak self] in
-                self?.pixelBuffer = pixelBuffer
-            }
-            await viewModel?.reconfigreAllItems()
+            await pixelBufferSubject.yield(with: pixelBuffer)
         }
     }
 }

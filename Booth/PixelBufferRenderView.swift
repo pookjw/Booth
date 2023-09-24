@@ -44,8 +44,9 @@ final class PixelBufferRenderView: UIView {
     }
     
     private func render() {
-        Task.detached(priority: .userInitiated) { [renderer, pixelBuffer, metalLayer] in
+        Task { [renderer, pixelBuffer, metalLayer] in
             guard let pixelBuffer: CVPixelBuffer else { return }
+            metalLayer.drawableSize = bounds.size
             await renderer.draw(pixelBuffer: pixelBuffer, in: metalLayer)
         }
     }
@@ -68,7 +69,7 @@ extension PixelBufferRenderView {
             }
             
             guard let drawable: CAMetalDrawable = metalLayer.nextDrawable() else {
-                print("Too many requests...")
+                print("Too many requests... \(metalLayer.drawableSize)")
                 return
             }
             

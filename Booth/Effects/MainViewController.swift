@@ -1,5 +1,5 @@
 //
-//  EffectsViewController.swift
+//  MainViewController.swift
 //  Booth
 //
 //  Created by Jinwoo Kim on 9/24/23.
@@ -9,7 +9,7 @@ import UIKit
 import CoreMedia
 
 @MainActor
-final class EffectsViewController: UIViewController {
+final class MainViewController: UIViewController {
     @ViewLoading private var effectsView: EffectsView
     private let captureService: CaptureService = .init()
     private var sampleBufferTask: Task<Void, Never>?

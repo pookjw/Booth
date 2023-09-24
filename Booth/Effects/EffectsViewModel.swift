@@ -22,10 +22,4 @@ actor EffectsViewModel {
         
         await dataSource.apply(snapshot, animatingDifferences: true)
     }
-    
-    func reconfigreAllItems() async {
-        var snapshot: NSDiffableDataSourceSnapshot<Int, EffectsItemModel> = dataSource.snapshot()
-        snapshot.reconfigureItems(snapshot.itemIdentifiers)
-        await dataSource.apply(snapshot, animatingDifferences: false)
-    }
 }
