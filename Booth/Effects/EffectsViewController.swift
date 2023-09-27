@@ -1,5 +1,5 @@
 //
-//  MainViewController.swift
+//  EffectsViewController.swift
 //  Booth
 //
 //  Created by Jinwoo Kim on 9/24/23.
@@ -9,13 +9,15 @@ import UIKit
 import CoreMedia
 
 @MainActor
-final class MainViewController: UIViewController {
+final class EffectsViewController: UIViewController {
     @ViewLoading private var effectsView: EffectsView
     private let captureService: CaptureService = .init()
     private var sampleBufferTask: Task<Void, Never>?
+    private var didSelectEffectTask: Task<Void, Never>?
     
     deinit {
         sampleBufferTask?.cancel()
+        didSelectEffectTask?.cancel()
     }
     
     override func viewDidLoad() {
@@ -44,6 +46,13 @@ final class MainViewController: UIViewController {
         effectsView = .init(frame: view.bounds)
         effectsView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         view.addSubview(effectsView)
+        
+        didSelectEffectTask = .init { [effectsView, weak self] in
+            for await effect in await await effectsView.didSelectEffectSubject.stream {
+                let renderView: PixelBufferRenderView? = effectsView.renderView(from: effect)
+                self?.presentDetailViewController(renderView: renderView)
+            }
+        }
     }
     
     private func loadCaptureService() {
@@ -55,5 +64,10 @@ final class MainViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    private func presentDetailViewController(renderView: PixelBufferRenderView?) {
+        let viewController: EffectsDetailViewController = .init(targetRenderView: renderView)
+        present(viewController, animated: true)
     }
 }

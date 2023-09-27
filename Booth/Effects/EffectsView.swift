@@ -10,6 +10,7 @@ import CoreMedia
 import CoreVideo
 
 final class EffectsView: UIView {
+    let didSelectEffectSubject: AsyncEventSubject<Effect> = .init()
     var sampleBuffer: CMSampleBuffer? {
         didSet {
             sampleBufferDidChange()
@@ -30,6 +31,22 @@ final class EffectsView: UIView {
         commonInit()
     }
     
+    func renderView(from effect: Effect) -> PixelBufferRenderView? {
+        for cell in collectionView.visibleCells {
+            guard
+                let contentConfiguration: EffectsContentView.Configuration = cell.contentConfiguration as? EffectsContentView.Configuration,
+                let contentView: EffectsContentView = cell.contentView as? EffectsContentView,
+                contentConfiguration.effect == effect
+            else {
+                continue
+            }
+            
+            return contentView.renderView
+        }
+        
+        return nil
+    }
+    
     private func commonInit() {
         configureCollectionView()
         configureViewModel()
@@ -42,13 +59,14 @@ final class EffectsView: UIView {
     private func configureCollectionView() {
         let collectionViewLayout: UICollectionViewLayout = createCollectionViewLayout()
         let collectionView: UICollectionView = .init(frame: bounds, collectionViewLayout: collectionViewLayout)
+        collectionView.delegate = self
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         addSubview(collectionView)
         self.collectionView = collectionView
     }
     
     private func configureViewModel() {
-        let dataSource: UICollectionViewDiffableDataSource<Int, EffectsItemModel> = createDataSource()
+        let dataSource: UICollectionViewDiffableDataSource<Int, Effect> = createDataSource()
         let viewModel: EffectsViewModel = .init(dataSource: dataSource)
         self.viewModel = viewModel
     }
@@ -86,17 +104,17 @@ final class EffectsView: UIView {
         return layout
     }
     
-    private func createDataSource() -> UICollectionViewDiffableDataSource<Int, EffectsItemModel> {
-        let cellRegistratoin: UICollectionView.CellRegistration<UICollectionViewCell, EffectsItemModel> = createCellRegistration()
+    private func createDataSource() -> UICollectionViewDiffableDataSource<Int, Effect> {
+        let cellRegistratoin: UICollectionView.CellRegistration<UICollectionViewCell, Effect> = createCellRegistration()
         
         return .init(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
             collectionView.dequeueConfiguredReusableCell(using: cellRegistratoin, for: indexPath, item: itemIdentifier)
         }
     }
     
-    private func createCellRegistration() -> UICollectionView.CellRegistration<UICollectionViewCell, EffectsItemModel> {
+    private func createCellRegistration() -> UICollectionView.CellRegistration<UICollectionViewCell, Effect> {
         .init { [pixelBufferSubject] cell, indexPath, itemIdentifier in
-            let contentConfiguration: EffectsContentView.Configuration = .init(pixelBufferSubject: pixelBufferSubject)
+            let contentConfiguration: EffectsContentView.Configuration = .init(effect: itemIdentifier, pixelBufferSubject: pixelBufferSubject)
             cell.contentConfiguration = contentConfiguration
         }
     }
@@ -115,6 +133,18 @@ final class EffectsView: UIView {
             }
             
             await pixelBufferSubject.yield(with: pixelBuffer)
+        }
+    }
+}
+
+extension EffectsView: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        Task { [viewModel, didSelectEffectSubject] in
+            guard let effect: Effect = await viewModel?.effect(at: indexPath) else {
+                return
+            }
+            
+            await didSelectEffectSubject.yield(with: effect)
         }
     }
 }

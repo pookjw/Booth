@@ -1,11 +1,11 @@
 //
-//  EffectsItemModel.swift
+//  Effect.swift
 //  Booth
 //
 //  Created by Jinwoo Kim on 9/24/23.
 //
 
-enum EffectsItemModel: CaseIterable, Hashable, Sendable {
+enum Effect: CaseIterable, Hashable, Sendable {
     case normal
     case demo_1
     case demo_2

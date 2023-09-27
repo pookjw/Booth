@@ -37,7 +37,7 @@ final class EffectsContentView: UIView, UIContentView {
         }
     }
     
-    private var renderView: PixelBufferRenderView!
+    private(set) var renderView: PixelBufferRenderView!
     private var pixelBufferTask: Task<Void, Never>?
     
     init(configuration: Configuration) {
@@ -77,8 +77,9 @@ final class EffectsContentView: UIView, UIContentView {
         let pixelBufferSubject: AsyncEventSubject<CVPixelBuffer?> = _configuration.pixelBufferSubject
         
         pixelBufferTask?.cancel()
-        pixelBufferTask = .init { [pixelBufferSubject, renderView] in
+        pixelBufferTask = .init { [pixelBufferSubject, renderView, weak self] in
             for await pixelBuffer in await pixelBufferSubject.stream {
+                guard self?.window != nil else { continue }
                 renderView?.pixelBuffer = pixelBuffer
             }
         }
@@ -87,6 +88,7 @@ final class EffectsContentView: UIView, UIContentView {
 
 extension EffectsContentView {
     struct Configuration: UIContentConfiguration {
+        let effect: Effect
         let pixelBufferSubject: AsyncEventSubject<CVPixelBuffer?>
         
         func makeContentView() -> UIView & UIContentView {
