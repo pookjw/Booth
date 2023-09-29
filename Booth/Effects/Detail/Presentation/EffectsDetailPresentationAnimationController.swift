@@ -9,11 +9,13 @@ import UIKit
 
 @MainActor
 final class EffectsDetailPresentationAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
-    private weak var targetView: UIView?
+    private let zoomStartView: UIView
+    private let zoomEndView: UIView
     
-    convenience init(targetView: UIView, targetFrame: CGRect) {
-        self.init()
-        self.targetView = targetView
+    init(zoomStartView: UIView, zoomEndView: UIView) {
+        self.zoomStartView = zoomStartView
+        self.zoomEndView = zoomEndView
+        super.init()
     }
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
@@ -28,17 +30,10 @@ final class EffectsDetailPresentationAnimationController: NSObject, UIViewContro
             return
         }
         
+        let zoomStartFrame: CGRect = zoomStartView.frame(in: fromView)!
         let containerView: UIView = transitionContext.containerView
         
         if transitionContext.isAnimated {
-            if 
-                let targetView: UIView,
-                let targetFrame: CGRect = targetView.frame(in: fromView)
-            {
-                
-            } else {
-                
-            }
             toView.translatesAutoresizingMaskIntoConstraints = false
             containerView.addSubview(toView)
             NSLayoutConstraint.activate([
@@ -48,12 +43,28 @@ final class EffectsDetailPresentationAnimationController: NSObject, UIViewContro
                 toView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
             ])
             
+            //
+            
+            zoomEndView.removeFromSuperview()
+            containerView.addSubview(zoomEndView)
+            zoomEndView.translatesAutoresizingMaskIntoConstraints = true
+            zoomEndView.autoresizingMask = .init(rawValue: .zero)
+            zoomEndView.frame = zoomStartFrame
+            zoomStartView.isHidden = true
+            
+            //
+            
+            containerView.layoutIfNeeded()
             toView.alpha = .zero
-            UIView.animate(withDuration: 0.3) { 
+            
+            //
+            
+            UIView.animate(withDuration: 0.3) { [zoomEndView] in
                 toView.alpha = 1.0
+                zoomEndView.frame = toView.bounds // TODO: Constraints
             }
         } else {
-            // TODO
+            fatalError("TODO")
         }
     }
     

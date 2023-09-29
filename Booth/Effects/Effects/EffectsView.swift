@@ -10,25 +10,44 @@ import CoreMedia
 import CoreVideo
 
 final class EffectsView: UIView {
+    enum Layout {
+        case grid
+        case full
+    }
+    
     let didSelectEffectSubject: AsyncEventSubject<Effect> = .init()
+    
     var sampleBuffer: CMSampleBuffer? {
         didSet {
-            sampleBufferDidChange()
+            Task.detached(priority: .userInitiated) { [sampleBuffer, pixelBufferSubject] in
+                let pixelBuffer: CVPixelBuffer?
+                if let sampleBuffer: CMSampleBuffer {
+                    pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
+                } else {
+                    pixelBuffer = nil
+                }
+                
+                await pixelBufferSubject.yield(with: pixelBuffer)
+            }
         }
     }
+    
+    private let layout: Layout
+    // for cells
     private let pixelBufferSubject: AsyncEventSubject<CVPixelBuffer?> = .init()
     
     private var collectionView: UICollectionView!
     private var viewModel: EffectsViewModel!
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, layout: Layout) {
+        self.layout = layout
         super.init(frame: frame)
         commonInit()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        commonInit()
+        fatalError("init(coder:) has not been implemented")
     }
     
     func renderView(from effect: Effect) -> PixelBufferRenderView? {
@@ -73,35 +92,64 @@ final class EffectsView: UIView {
     
     private func createCollectionViewLayout() -> UICollectionViewLayout {
         let configuration: UICollectionViewCompositionalLayoutConfiguration = .init()
-        configuration.scrollDirection = .vertical
         
-        let layout: UICollectionViewCompositionalLayout = .init(
-            sectionProvider: { sectionIndex, environment in
-                let quotient: Int = .init(floorf(Float(environment.container.contentSize.width) / 300.0))
-                let count: Int = (quotient < 2) ? 2 : quotient
-                let count_f: Float = .init(count)
-                
-                let itemSize: NSCollectionLayoutSize = .init(
-                    widthDimension: .fractionalWidth(.init(1.0 / count_f)),
-                    heightDimension: .fractionalHeight(1.0)
-                )
-                
-                let item: NSCollectionLayoutItem = .init(layoutSize: itemSize)
-                
-                let groupSize: NSCollectionLayoutSize = .init(
-                    widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .fractionalWidth(.init(1.0 / count_f))
-                )
-                
-                let group: NSCollectionLayoutGroup = .horizontal(layoutSize: groupSize, repeatingSubitem: item, count: count)
-                let section: NSCollectionLayoutSection = .init(group: group)
-                
-                return section
+        switch layout {
+        case .grid:
+            configuration.contentInsetsReference = .safeArea
+            configuration.scrollDirection = .vertical
+        case .full:
+            configuration.contentInsetsReference = .none
+            configuration.scrollDirection = .horizontal
+        }
+        
+        let collectionViewLayout: UICollectionViewCompositionalLayout = .init(
+            sectionProvider: { [layout] sectionIndex, environment in
+                switch layout {
+                case .grid:
+                    let quotient: Int = .init(floorf(Float(environment.container.contentSize.width) / 300.0))
+                    let count: Int = (quotient < 2) ? 2 : quotient
+                    let count_f: Float = .init(count)
+                    
+                    let itemSize: NSCollectionLayoutSize = .init(
+                        widthDimension: .fractionalWidth(.init(1.0 / count_f)),
+                        heightDimension: .fractionalHeight(1.0)
+                    )
+                    
+                    let item: NSCollectionLayoutItem = .init(layoutSize: itemSize)
+                    
+                    let groupSize: NSCollectionLayoutSize = .init(
+                        widthDimension: .fractionalWidth(1.0),
+                        heightDimension: .fractionalWidth(.init(1.0 / count_f))
+                    )
+                    
+                    let group: NSCollectionLayoutGroup = .horizontal(layoutSize: groupSize, repeatingSubitem: item, count: count)
+                    let section: NSCollectionLayoutSection = .init(group: group)
+                    
+                    return section
+                case .full:
+                    let itemSize: NSCollectionLayoutSize = .init(
+                        widthDimension: .fractionalWidth(1.0),
+                        heightDimension: .fractionalHeight(1.0)
+                    )
+                    
+                    let item: NSCollectionLayoutItem = .init(layoutSize: itemSize)
+                    
+                    let groupSize: NSCollectionLayoutSize = .init(
+                        widthDimension: .fractionalWidth(1.0),
+                        heightDimension: .fractionalHeight(1.0)
+                    )
+                    
+                    let group: NSCollectionLayoutGroup = .horizontal(layoutSize: groupSize, subitems: [item])
+                    
+                    let section: NSCollectionLayoutSection = .init(group: group)
+                    
+                    return section
+                }
         },
             configuration: configuration
         )
         
-        return layout
+        return collectionViewLayout
     }
     
     private func createDataSource() -> UICollectionViewDiffableDataSource<Int, Effect> {
@@ -121,19 +169,6 @@ final class EffectsView: UIView {
     
     private nonisolated func pixelBuffer(from sampleBuffer: CMSampleBuffer) async -> CVPixelBuffer? {
         CMSampleBufferGetImageBuffer(sampleBuffer)
-    }
-    
-    private func sampleBufferDidChange() {
-        Task.detached(priority: .userInitiated) { [sampleBuffer, pixelBufferSubject] in
-            let pixelBuffer: CVPixelBuffer?
-            if let sampleBuffer: CMSampleBuffer {
-                pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
-            } else {
-                pixelBuffer = nil
-            }
-            
-            await pixelBufferSubject.yield(with: pixelBuffer)
-        }
     }
 }
 

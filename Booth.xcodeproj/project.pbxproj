@@ -17,7 +17,7 @@
 		4FB4A4B62ABF43A300C2D637 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB4A4B52ABF43A300C2D637 /* SceneDelegate.swift */; };
 		4FB4A4BD2ABF43A400C2D637 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FB4A4BC2ABF43A400C2D637 /* Assets.xcassets */; };
 		4FB4A4C02ABF43A400C2D637 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4FB4A4BE2ABF43A400C2D637 /* LaunchScreen.storyboard */; };
-		4FB4A4C82ABF443300C2D637 /* EffectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB4A4C72ABF443300C2D637 /* EffectsViewController.swift */; };
+		4FB4A4C82ABF443300C2D637 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB4A4C72ABF443300C2D637 /* MainViewController.swift */; };
 		4FB4A4CA2ABF449300C2D637 /* CaptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB4A4C92ABF449300C2D637 /* CaptureService.swift */; };
 		4FB4A4CC2ABF4A6600C2D637 /* AsyncEventSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB4A4CB2ABF4A6600C2D637 /* AsyncEventSubject.swift */; };
 		4FB4A4CE2ABF4CBE00C2D637 /* pixel_buffer_shader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 4FB4A4CD2ABF4CBE00C2D637 /* pixel_buffer_shader.metal */; };
@@ -40,7 +40,7 @@
 		4FB4A4BC2ABF43A400C2D637 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4FB4A4BF2ABF43A400C2D637 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4FB4A4C12ABF43A400C2D637 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4FB4A4C72ABF443300C2D637 /* EffectsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EffectsViewController.swift; sourceTree = "<group>"; };
+		4FB4A4C72ABF443300C2D637 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		4FB4A4C92ABF449300C2D637 /* CaptureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureService.swift; sourceTree = "<group>"; };
 		4FB4A4CB2ABF4A6600C2D637 /* AsyncEventSubject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncEventSubject.swift; sourceTree = "<group>"; };
 		4FB4A4CD2ABF4CBE00C2D637 /* pixel_buffer_shader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = pixel_buffer_shader.metal; sourceTree = "<group>"; };
@@ -63,13 +63,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4F80B4772AC0311A005C36BD /* Effects */ = {
+		4F6B72842AC6CC7700E397DC /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				4FB4A4C72ABF443300C2D637 /* EffectsViewController.swift */,
+				4FF449C12AC0C66E007051B2 /* EffectsDetailPresentationController.swift */,
+				4F5520872AC3EC3F007C6F45 /* EffectsDetailPresentationAnimationController.swift */,
+				4F5520892AC3ECD9007C6F45 /* EffectsDetailDismissalAnimationController.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		4F6B72872AC6D20900E397DC /* Effects */ = {
+			isa = PBXGroup;
+			children = (
 				4F80B4782AC0313A005C36BD /* EffectsView.swift */,
 				4F80B47A2AC034ED005C36BD /* EffectsViewModel.swift */,
 				4F80B4802AC03710005C36BD /* EffectsContentView.swift */,
+			);
+			path = Effects;
+			sourceTree = "<group>";
+		};
+		4F80B4772AC0311A005C36BD /* Effects */ = {
+			isa = PBXGroup;
+			children = (
+				4FB4A4C72ABF443300C2D637 /* MainViewController.swift */,
+				4F6B72872AC6D20900E397DC /* Effects */,
 				4FF449C02AC0C5F0007051B2 /* Detail */,
 			);
 			path = Effects;
@@ -116,9 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				4FF449BE2AC0BC2D007051B2 /* EffectsDetailViewController.swift */,
-				4FF449C12AC0C66E007051B2 /* EffectsDetailPresentationController.swift */,
-				4F5520872AC3EC3F007C6F45 /* EffectsDetailPresentationAnimationController.swift */,
-				4F5520892AC3ECD9007C6F45 /* EffectsDetailDismissalAnimationController.swift */,
+				4F6B72842AC6CC7700E397DC /* Presentation */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -208,7 +224,7 @@
 				4F80B4812AC03710005C36BD /* EffectsContentView.swift in Sources */,
 				4FB4A4D42ABFE8CE00C2D637 /* UIWindowScene+interfaceOrientationDidChangeNotification.mm in Sources */,
 				4F5520882AC3EC3F007C6F45 /* EffectsDetailPresentationAnimationController.swift in Sources */,
-				4FB4A4C82ABF443300C2D637 /* EffectsViewController.swift in Sources */,
+				4FB4A4C82ABF443300C2D637 /* MainViewController.swift in Sources */,
 				4FF449C22AC0C66E007051B2 /* EffectsDetailPresentationController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

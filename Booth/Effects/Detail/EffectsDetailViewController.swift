@@ -6,43 +6,91 @@
 //
 
 import UIKit
+import CoreMedia
 
 @MainActor
 final class EffectsDetailViewController: UIViewController {
-    private weak var targetRenderView: PixelBufferRenderView?
+    var sampleBuffer: CMSampleBuffer? {
+        get {
+            effectsView.sampleBuffer
+        }
+        set {
+            effectsView.sampleBuffer = newValue
+        }
+    }
     
-    convenience init(targetRenderView: PixelBufferRenderView?) {
-        self.init(nibName: nil, bundle: nil)
-        self.targetRenderView = targetRenderView
+    private let effectsView: EffectsView = .init(frame: .null, layout: .full)
+    
+    private weak var zoomStartView: UIView?
+    private let initialEffect: Effect?
+    
+    init(zoomStartView: UIView, initialEffect: Effect) {
+        self.zoomStartView = zoomStartView
+        self.initialEffect = initialEffect
+        super.init(nibName: nil, bundle: nil)
+        commonInit()
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        zoomStartView = nil
+        initialEffect = nil
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         commonInit()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        commonInit()
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .orange.withAlphaComponent(0.5)
+        setupAttributes()
+        layoutEffectsView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if let transitionCoordinator: UIViewControllerTransitionCoordinator {
+            transitionCoordinator.animate { context in
+                
+            } completion: { [weak self] context in
+                self?.layoutEffectsView()
+            }
+        }
     }
     
     private func commonInit() {
         modalPresentationStyle = .custom
         transitioningDelegate = self
     }
+    
+    private func setupAttributes() {
+        view.backgroundColor = .clear
+    }
+    
+    private func layoutEffectsView() {
+        effectsView.removeFromSuperview()
+        effectsView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(effectsView)
+        NSLayoutConstraint.activate([
+            effectsView.topAnchor.constraint(equalTo: view.topAnchor),
+            effectsView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            effectsView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            effectsView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
 }
 
 extension EffectsDetailViewController: UIViewControllerTransitioningDelegate {
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if let targetRenderView: PixelBufferRenderView {
-            EffectsDetailPresentationAnimationController(targetView: targetRenderView, targetFrame: presented.view.bounds)
+        if
+            let zoomStartView: UIView
+        {
+            EffectsDetailPresentationAnimationController(zoomStartView: zoomStartView, zoomEndView: effectsView)
         } else {
-            EffectsDetailPresentationAnimationController()
+            fatalError("TODO")
         }
     }
     
@@ -59,6 +107,9 @@ extension EffectsDetailViewController: UIViewControllerTransitioningDelegate {
     }
     
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        EffectsDetailPresentationController(presentedViewController: presented, presenting: presenting)
+        EffectsDetailPresentationController(
+            presentedViewController: presented,
+            presenting: presenting
+        )
     }
 }

@@ -13,7 +13,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         let windowScene: UIWindowScene = scene as! UIWindowScene
         let window: UIWindow = .init(windowScene: windowScene)
-        let rootViewController: EffectsViewController = .init()
+        let rootViewController: MainViewController = .init()
         window.rootViewController = rootViewController
         window.makeKeyAndVisible()
         self.window = window
