@@ -57,11 +57,21 @@ final class EffectsDetailPresentationAnimationController: NSObject, UIViewContro
             containerView.layoutIfNeeded()
             toView.alpha = .zero
             
+            zoomEndView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                zoomEndView.topAnchor.constraint(equalTo: containerView.topAnchor),
+                zoomEndView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+                zoomEndView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+                zoomEndView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+            ])
+            
             //
             
-            UIView.animate(withDuration: 0.3) { [zoomEndView] in
+            UIView.animate(withDuration: 0.3) {
                 toView.alpha = 1.0
-                zoomEndView.frame = toView.bounds // TODO: Constraints
+                containerView.layoutIfNeeded()
+            } completion: { finished in
+                transitionContext.completeTransition(finished)
             }
         } else {
             fatalError("TODO")

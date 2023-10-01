@@ -79,6 +79,18 @@ final class EffectsView: UIView {
         let collectionViewLayout: UICollectionViewLayout = createCollectionViewLayout()
         let collectionView: UICollectionView = .init(frame: bounds, collectionViewLayout: collectionViewLayout)
         collectionView.delegate = self
+        
+        switch layout {
+        case .grid:
+            collectionView.bounces = true
+            collectionView.showsVerticalScrollIndicator = true
+            collectionView.contentInsetAdjustmentBehavior = .always
+        case .full:
+            collectionView.bounces = false
+            collectionView.showsVerticalScrollIndicator = false
+            collectionView.contentInsetAdjustmentBehavior = .never
+        }
+        
         collectionView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         addSubview(collectionView)
         self.collectionView = collectionView
@@ -99,7 +111,7 @@ final class EffectsView: UIView {
             configuration.scrollDirection = .vertical
         case .full:
             configuration.contentInsetsReference = .none
-            configuration.scrollDirection = .horizontal
+            configuration.scrollDirection = .vertical
         }
         
         let collectionViewLayout: UICollectionViewCompositionalLayout = .init(
@@ -142,6 +154,10 @@ final class EffectsView: UIView {
                     let group: NSCollectionLayoutGroup = .horizontal(layoutSize: groupSize, subitems: [item])
                     
                     let section: NSCollectionLayoutSection = .init(group: group)
+                    section.orthogonalScrollingBehavior = .groupPaging
+                    section.orthogonalScrollingProperties.bounce = .always
+                    section.orthogonalScrollingProperties.decelerationRate = .fast
+                    section.contentInsetsReference = .none
                     
                     return section
                 }
