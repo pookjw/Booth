@@ -9,12 +9,24 @@
 
 @implementation EffectsView
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+- (instancetype)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
+        [self EffectsView_commonInit];
+    }
+    
+    return self;
 }
-*/
+
+- (instancetype)initWithCoder:(NSCoder *)coder {
+    if (self = [super initWithCoder:coder]) {
+        [self EffectsView_commonInit];
+    }
+    
+    return self;
+}
+
+- (void)EffectsView_commonInit {
+    self.backgroundColor = UIColor.systemMintColor;
+}
 
 @end

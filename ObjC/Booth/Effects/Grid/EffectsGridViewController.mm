@@ -6,15 +6,30 @@
 //
 
 #import "EffectsGridViewController.hpp"
+#import "EffectsView.hpp"
 
 @interface EffectsGridViewController ()
+@property (retain) EffectsView *effectsView;
 @end
 
 @implementation EffectsGridViewController
 
+- (void)dealloc {
+    [_effectsView release];
+    [super dealloc];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = UIColor.systemYellowColor;
+    [self setupEffectsView];
+}
+
+- (void)setupEffectsView {
+    EffectsView *effectsView = [[EffectsView alloc] initWithFrame:self.view.bounds];
+    effectsView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self.view addSubview:effectsView];
+    self.effectsView = effectsView;
+    [effectsView release];
 }
 
 @end

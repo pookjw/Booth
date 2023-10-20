@@ -15,6 +15,9 @@
 		4F4FB06C2AE2BFC100E8BEB3 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4FB06B2AE2BFC100E8BEB3 /* main.mm */; };
 		4F4FB0742AE2C13F00E8BEB3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F4FB0732AE2C13F00E8BEB3 /* UIKit.framework */; };
 		4F4FB0792AE2C27F00E8BEB3 /* EffectsView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4FB0782AE2C27F00E8BEB3 /* EffectsView.mm */; };
+		4F4FB07B2AE2C3DF00E8BEB3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F4FB07A2AE2C3DF00E8BEB3 /* AVFoundation.framework */; };
+		4F4FB07D2AE2C3E400E8BEB3 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F4FB07C2AE2C3E400E8BEB3 /* MetalKit.framework */; };
+		4F4FB0812AE2C50D00E8BEB3 /* CameraService.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4FB0802AE2C50D00E8BEB3 /* CameraService.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +35,10 @@
 		4F4FB0732AE2C13F00E8BEB3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		4F4FB0772AE2C27F00E8BEB3 /* EffectsView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EffectsView.hpp; sourceTree = "<group>"; };
 		4F4FB0782AE2C27F00E8BEB3 /* EffectsView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EffectsView.mm; sourceTree = "<group>"; };
+		4F4FB07A2AE2C3DF00E8BEB3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		4F4FB07C2AE2C3E400E8BEB3 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		4F4FB07F2AE2C50D00E8BEB3 /* CameraService.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = CameraService.hpp; sourceTree = "<group>"; };
+		4F4FB0802AE2C50D00E8BEB3 /* CameraService.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CameraService.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +46,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F4FB07D2AE2C3E400E8BEB3 /* MetalKit.framework in Frameworks */,
+				4F4FB07B2AE2C3DF00E8BEB3 /* AVFoundation.framework in Frameworks */,
 				4F4FB0742AE2C13F00E8BEB3 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -74,6 +83,7 @@
 				4F4FB0672AE2BFC100E8BEB3 /* LaunchScreen.storyboard */,
 				4F4FB06A2AE2BFC100E8BEB3 /* Info.plist */,
 				4F4FB06B2AE2BFC100E8BEB3 /* main.mm */,
+				4F4FB07E2AE2C3F800E8BEB3 /* Camera */,
 				4F4FB0752AE2C1C700E8BEB3 /* Effects */,
 			);
 			path = Booth;
@@ -82,6 +92,8 @@
 		4F4FB0722AE2C13F00E8BEB3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4F4FB07C2AE2C3E400E8BEB3 /* MetalKit.framework */,
+				4F4FB07A2AE2C3DF00E8BEB3 /* AVFoundation.framework */,
 				4F4FB0732AE2C13F00E8BEB3 /* UIKit.framework */,
 			);
 			name = Frameworks;
@@ -104,6 +116,15 @@
 				4F4FB0602AE2BFC000E8BEB3 /* EffectsGridViewController.mm */,
 			);
 			path = Grid;
+			sourceTree = "<group>";
+		};
+		4F4FB07E2AE2C3F800E8BEB3 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				4F4FB07F2AE2C50D00E8BEB3 /* CameraService.hpp */,
+				4F4FB0802AE2C50D00E8BEB3 /* CameraService.mm */,
+			);
+			path = Camera;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -177,6 +198,7 @@
 			files = (
 				4F4FB0792AE2C27F00E8BEB3 /* EffectsView.mm in Sources */,
 				4F4FB0612AE2BFC000E8BEB3 /* EffectsGridViewController.mm in Sources */,
+				4F4FB0812AE2C50D00E8BEB3 /* CameraService.mm in Sources */,
 				4F4FB05B2AE2BFC000E8BEB3 /* AppDelegate.mm in Sources */,
 				4F4FB06C2AE2BFC100E8BEB3 /* main.mm in Sources */,
 				4F4FB05E2AE2BFC000E8BEB3 /* SceneDelegate.mm in Sources */,
