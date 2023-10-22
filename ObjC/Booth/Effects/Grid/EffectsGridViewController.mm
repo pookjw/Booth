@@ -32,4 +32,8 @@
     [effectsView release];
 }
 
+- (void)updateSampleBuffer:(CMSampleBufferRef)sampleBuffer {
+    NSLog(@"Hello!");
+}
+
 @end

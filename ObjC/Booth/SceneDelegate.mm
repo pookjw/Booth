@@ -6,7 +6,7 @@
 //
 
 #import "SceneDelegate.hpp"
-#import "EffectsGridViewController.hpp"
+#import "CameraRootViewController.hpp"
 
 @interface SceneDelegate ()
 @end
@@ -20,9 +20,14 @@
 
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
     UIWindow *window = [[UIWindow alloc] initWithWindowScene:static_cast<UIWindowScene *>(scene)];
-    EffectsGridViewController *rootViewController = [EffectsGridViewController new];
-    window.rootViewController = rootViewController;
-    [rootViewController release];
+    CameraRootViewController *cameraRootViewController = [CameraRootViewController new];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:cameraRootViewController];
+    
+    [cameraRootViewController release];
+    [navigationController setToolbarHidden:NO animated:NO];
+    window.rootViewController = navigationController;
+    [navigationController release];
+    
     [window makeKeyAndVisible];
     self.window = window;
     [window release];
