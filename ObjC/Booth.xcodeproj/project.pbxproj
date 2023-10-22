@@ -12,6 +12,8 @@
 		4F228EA72AE5514800ABC029 /* PixelBufferRenderView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F228EA62AE5514800ABC029 /* PixelBufferRenderView.mm */; };
 		4F228EA92AE551A800ABC029 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F228EA82AE551A800ABC029 /* QuartzCore.framework */; };
 		4F228EAC2AE551DF00ABC029 /* UIWindowScene+interfaceOrientationDidChangeNotification.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F228EAB2AE551DF00ABC029 /* UIWindowScene+interfaceOrientationDidChangeNotification.mm */; };
+		4F228EC12AE572B000ABC029 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F228EC02AE572B000ABC029 /* CoreVideo.framework */; };
+		4F228EC32AE5739900ABC029 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F228EC22AE5739900ABC029 /* CoreMedia.framework */; };
 		4F4FB05B2AE2BFC000E8BEB3 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4FB05A2AE2BFC000E8BEB3 /* AppDelegate.mm */; };
 		4F4FB05E2AE2BFC000E8BEB3 /* SceneDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4FB05D2AE2BFC000E8BEB3 /* SceneDelegate.mm */; };
 		4F4FB0612AE2BFC000E8BEB3 /* EffectsGridViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4FB0602AE2BFC000E8BEB3 /* EffectsGridViewController.mm */; };
@@ -33,6 +35,8 @@
 		4F228EA82AE551A800ABC029 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		4F228EAA2AE551DF00ABC029 /* UIWindowScene+interfaceOrientationDidChangeNotification.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "UIWindowScene+interfaceOrientationDidChangeNotification.hpp"; sourceTree = "<group>"; };
 		4F228EAB2AE551DF00ABC029 /* UIWindowScene+interfaceOrientationDidChangeNotification.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIWindowScene+interfaceOrientationDidChangeNotification.mm"; sourceTree = "<group>"; };
+		4F228EC02AE572B000ABC029 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		4F228EC22AE5739900ABC029 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		4F4FB0562AE2BFC000E8BEB3 /* Booth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Booth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F4FB0592AE2BFC000E8BEB3 /* AppDelegate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AppDelegate.hpp; sourceTree = "<group>"; };
 		4F4FB05A2AE2BFC000E8BEB3 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
@@ -61,6 +65,8 @@
 				4F4FB07D2AE2C3E400E8BEB3 /* MetalKit.framework in Frameworks */,
 				4F4FB07B2AE2C3DF00E8BEB3 /* AVFoundation.framework in Frameworks */,
 				4F4FB0742AE2C13F00E8BEB3 /* UIKit.framework in Frameworks */,
+				4F228EC12AE572B000ABC029 /* CoreVideo.framework in Frameworks */,
+				4F228EC32AE5739900ABC029 /* CoreMedia.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +115,8 @@
 		4F4FB0722AE2C13F00E8BEB3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4F228EC22AE5739900ABC029 /* CoreMedia.framework */,
+				4F228EC02AE572B000ABC029 /* CoreVideo.framework */,
 				4F228EA82AE551A800ABC029 /* QuartzCore.framework */,
 				4F228E702AE4205400ABC029 /* CoreGraphics.framework */,
 				4F4FB07C2AE2C3E400E8BEB3 /* MetalKit.framework */,

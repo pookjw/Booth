@@ -11,7 +11,7 @@
 
 __attribute__((objc_direct_members))
 @interface PixelBufferRenderView () {
-    CMSampleBufferRef _sampleBuffer;
+    CVPixelBufferRef _queue_pixelBuffer;
 }
 @property (retain) dispatch_queue_t queue;
 @end
@@ -39,8 +39,8 @@ __attribute__((objc_direct_members))
 }
 
 - (void)dealloc {
-    CFRelease(_sampleBuffer);
-    dispatch_release(self.queue);
+    CFRelease(_queue_pixelBuffer);
+    dispatch_release(_queue);
     [super dealloc];
 }
 
@@ -57,7 +57,7 @@ __attribute__((objc_direct_members))
         [NSNotificationCenter.defaultCenter removeObserver:self name:UIWindowSceneInterfaceOrientationDidChangeNotification object:windowScene];
     }
     
-    [self willMoveToWindow:newWindow];
+    [super willMoveToWindow:newWindow];
 }
 
 - (void)didMoveToWindow {
@@ -68,22 +68,36 @@ __attribute__((objc_direct_members))
     }
 }
 
-- (void)updateSampleBuffer:(CMSampleBufferRef)sampleBuffer __attribute__((objc_direct)) {
-    // data race?
-    CFRelease(_sampleBuffer);
-    CFRetain(sampleBuffer);
-    _sampleBuffer = sampleBuffer;
+- (void)updatePixelBuffer:(CVPixelBufferRef)pixelBuffer __attribute__((objc_direct)) {
+    // block catpure
+    id bridged = (id)pixelBuffer;
+    
+    dispatch_async(self.queue, ^{
+        auto pixelBuffer = static_cast<CVPixelBufferRef>(bridged);
+        if (_queue_pixelBuffer) {
+            CFRelease(_queue_pixelBuffer);
+        }
+        CFRetain(pixelBuffer);
+        _queue_pixelBuffer = pixelBuffer;
+        
+        [self queue_renderWithPixelBuffer:pixelBuffer];
+    });
+}
+
+- (void)render __attribute__((objc_direct)) {
+    dispatch_async(self.queue, ^{
+        [self queue_renderWithPixelBuffer:_queue_pixelBuffer];
+    });
+}
+
+- (void)queue_renderWithPixelBuffer:(CVPixelBufferRef)pixelBuffer __attribute__((objc_direct)) {
+    if (pixelBuffer == NULL) return;
+    
+    // TODO
 }
 
 - (void)interfaceOrientationDidChange:(NSNotification *)notification {
     [self render];
-}
-
-- (void)render __attribute__((objc_direct)) {
-    // retain 미리
-    dispatch_async(self.queue, ^{
-        
-    });
 }
 
 @end
