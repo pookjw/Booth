@@ -39,7 +39,9 @@ __attribute__((objc_direct_members))
 }
 
 - (void)dealloc {
-    CFRelease(_queue_pixelBuffer);
+    if (_queue_pixelBuffer) {
+        CFRelease(_queue_pixelBuffer);
+    }
     dispatch_release(_queue);
     [super dealloc];
 }
