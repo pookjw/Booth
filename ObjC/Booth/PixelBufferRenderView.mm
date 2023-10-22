@@ -77,6 +77,8 @@ __attribute__((objc_direct_members))
     dispatch_async(self.queue, ^{
         auto pixelBuffer = static_cast<CVPixelBufferRef>(bridged);
         if (_queue_pixelBuffer) {
+            
+            // 여러 thread에서 하나의 객체를 release하면 문제될 것
             CFRelease(_queue_pixelBuffer);
         }
         CFRetain(pixelBuffer);
