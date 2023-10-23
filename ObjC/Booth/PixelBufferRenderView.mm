@@ -183,7 +183,7 @@ __attribute__((objc_direct_members))
         scale.first, scale.second, 0.f, 1.f
     };
     
-    id<MTLBuffer> vertexCoordBuffer = [self.device newBufferWithBytes:vertexArray.data() length:vertexArray.size() * sizeof(std::float_t) options:0];
+    id<MTLBuffer> vertexCoordBuffer = [_device newBufferWithBytes:vertexArray.data() length:vertexArray.size() * sizeof(std::float_t) options:0];
     
     constexpr std::array<std::float_t, 8> textureArray {
         0.f, 1.f,
@@ -192,10 +192,10 @@ __attribute__((objc_direct_members))
         1.f, 0.f
     };
     
-    id<MTLBuffer> textureCoordBuffer = [self.device newBufferWithBytes:textureArray.data() length:textureArray.size() * sizeof(std::float_t) options:0];
+    id<MTLBuffer> textureCoordBuffer = [_device newBufferWithBytes:textureArray.data() length:textureArray.size() * sizeof(std::float_t) options:0];
     
     MTLCommandBufferDescriptor *commandBufferDescriptor = [MTLCommandBufferDescriptor new];
-    id<MTLCommandBuffer> commandBuffer = [self.commandQueue commandBufferWithDescriptor:commandBufferDescriptor];
+    id<MTLCommandBuffer> commandBuffer = [_commandQueue commandBufferWithDescriptor:commandBufferDescriptor];
     [commandBufferDescriptor release];
     
     //
@@ -209,13 +209,13 @@ __attribute__((objc_direct_members))
     id<MTLRenderCommandEncoder> commandEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
     [renderPassDescriptor release];
     commandEncoder.label = [NSString stringWithFormat:@"%@", self];
-    [commandEncoder setRenderPipelineState:self.renderPipelineState];
+    [commandEncoder setRenderPipelineState:_renderPipelineState];
     [commandEncoder setVertexBuffer:vertexCoordBuffer offset:0 atIndex:0];
     [vertexCoordBuffer release];
     [commandEncoder setVertexBuffer:textureCoordBuffer offset:0 atIndex:1];
     [textureCoordBuffer release];
     [commandEncoder setFragmentTexture:texture atIndex:0];
-    [commandEncoder setFragmentSamplerState:self.samplerState atIndex:0];
+    [commandEncoder setFragmentSamplerState:_samplerState atIndex:0];
     [commandEncoder drawPrimitives:MTLPrimitiveTypeTriangleStrip vertexStart:0 vertexCount:4];
     [commandEncoder endEncoding];
     
