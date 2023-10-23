@@ -25,6 +25,7 @@
 		4F4FB07B2AE2C3DF00E8BEB3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F4FB07A2AE2C3DF00E8BEB3 /* AVFoundation.framework */; };
 		4F4FB07D2AE2C3E400E8BEB3 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F4FB07C2AE2C3E400E8BEB3 /* MetalKit.framework */; };
 		4F9369092AE6B58000BE8E14 /* pixel_buffer_shader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 4F9369082AE6B58000BE8E14 /* pixel_buffer_shader.metal */; };
+		4FC9079E2AE6C6CD0025AFCA /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FC9079D2AE6C6CC0025AFCA /* Metal.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +56,7 @@
 		4F4FB07A2AE2C3DF00E8BEB3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		4F4FB07C2AE2C3E400E8BEB3 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		4F9369082AE6B58000BE8E14 /* pixel_buffer_shader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = pixel_buffer_shader.metal; sourceTree = "<group>"; };
+		4FC9079D2AE6C6CC0025AFCA /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 				4F4FB07B2AE2C3DF00E8BEB3 /* AVFoundation.framework in Frameworks */,
 				4F4FB0742AE2C13F00E8BEB3 /* UIKit.framework in Frameworks */,
 				4F228EC12AE572B000ABC029 /* CoreVideo.framework in Frameworks */,
+				4FC9079E2AE6C6CD0025AFCA /* Metal.framework in Frameworks */,
 				4F228EC32AE5739900ABC029 /* CoreMedia.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -118,6 +121,7 @@
 		4F4FB0722AE2C13F00E8BEB3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4FC9079D2AE6C6CC0025AFCA /* Metal.framework */,
 				4F228EC22AE5739900ABC029 /* CoreMedia.framework */,
 				4F228EC02AE572B000ABC029 /* CoreVideo.framework */,
 				4F228EA82AE551A800ABC029 /* QuartzCore.framework */,

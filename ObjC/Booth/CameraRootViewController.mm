@@ -145,10 +145,15 @@ __attribute__((objc_direct_members))
                                                                                              DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     dispatch_queue_t videoSampleBufferQueue = dispatch_queue_create("com.pookjw.Booth.videoSampleBufferQueue", qosAttribute);
     
+    [[captureVideoDataOutput availableVideoCVPixelFormatTypes] enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        char buffer[5] = {0};
+        *(int *)&buffer[0] = CFSwapInt32HostToBig([obj intValue]);
+        NSLog(@"FORMAT: %s", buffer);
+    }];
     
     [captureVideoDataOutput setSampleBufferDelegate:self queue:videoSampleBufferQueue];
     captureVideoDataOutput.videoSettings = @{
-        
+        (id)kCVPixelBufferPixelFormatTypeKey: @(kCVPixelFormatType_32BGRA)
     };
     
     self.captureVideoDataOutput = captureVideoDataOutput;
