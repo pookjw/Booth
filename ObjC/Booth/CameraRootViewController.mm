@@ -189,6 +189,8 @@ __attribute__((objc_direct_members))
         if (input) {
             [captureSession addInput:input];
         }
+        
+        [input release];
     }
     
     [captureSession commitConfiguration];

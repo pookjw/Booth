@@ -47,6 +47,8 @@
 
 - (void)updateSampleBuffer:(CMSampleBufferRef)sampleBuffer {
     CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+    
+    // TODO: NSNotificationCenter
     [self.tmp_renderView updatePixelBuffer:pixelBuffer];
 }
 
