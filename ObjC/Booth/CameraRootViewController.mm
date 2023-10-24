@@ -8,6 +8,7 @@
 #import "CameraRootViewController.hpp"
 #import "EffectsGridViewController.hpp"
 #import <AVFoundation/AVFoundation.h>
+#import <CoreMedia/CoreMedia.h>
 
 namespace ns_CameraRootViewController {
     void *devicesContext = &devicesContext;
@@ -87,6 +88,8 @@ __attribute__((objc_direct_members))
     UIBarButtonItem *captureBarButtonItem = [[UIBarButtonItem alloc] initWithPrimaryAction:primaryAction];
     [self setToolbarItems:@[captureBarButtonItem] animated:NO];
     [captureBarButtonItem release];
+    
+    self.view.backgroundColor = UIColor.systemBackgroundColor;
 }
 
 - (void)setupEffectsGridViewController __attribute__((objc_direct)) {
@@ -189,6 +192,7 @@ __attribute__((objc_direct_members))
         if (error) {
             NSLog(@"%@", error);
             assert(!error);
+            return;
         }
         
         if (input) {
@@ -243,7 +247,8 @@ __attribute__((objc_direct_members))
 #pragma mark - AVCaptureVideoDataOutputSampleBufferDelegate
 
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
-    [self.effectsGridViewController updateSampleBuffer:sampleBuffer];
+    CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+    [self.effectsGridViewController updatePixelBuffer:pixelBuffer];
 }
 
 @end
