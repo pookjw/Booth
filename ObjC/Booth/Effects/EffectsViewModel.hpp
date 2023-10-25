@@ -15,6 +15,8 @@ class EffectsViewModel {
 public:
     EffectsViewModel(UICollectionViewDiffableDataSource<NSNumber *, EffectsItemModel *> *dataSource);
     ~EffectsViewModel();
+    EffectsViewModel(const EffectsViewModel&) = delete;
+    EffectsViewModel& operator=(const EffectsViewModel&) = delete;
     
     void load(std::function<void ()>completionHandler);
 private:

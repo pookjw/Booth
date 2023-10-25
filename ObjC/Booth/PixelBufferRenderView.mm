@@ -78,7 +78,7 @@ __attribute__((objc_direct_members))
 
 - (void)willMoveToWindow:(UIWindow *)newWindow {
     if (UIWindowScene *windowScene = self.window.windowScene) {
-        [NSNotificationCenter.defaultCenter removeObserver:self name:UIWindowSceneInterfaceOrientationDidChangeNotification object:windowScene];
+        [NSNotificationCenter.defaultCenter removeObserver:self name:UIWindowSceneInterfaceOrientationDidChangeNotificationName object:windowScene];
     }
     
     [super willMoveToWindow:newWindow];
@@ -88,7 +88,7 @@ __attribute__((objc_direct_members))
     [super didMoveToWindow];
     
     if (UIWindowScene *windowScene = self.window.windowScene) {
-        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(interfaceOrientationDidChange:) name:UIWindowSceneInterfaceOrientationDidChangeNotification object:windowScene];
+        [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(interfaceOrientationDidChange:) name:UIWindowSceneInterfaceOrientationDidChangeNotificationName object:windowScene];
     }
 }
 

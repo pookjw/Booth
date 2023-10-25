@@ -37,7 +37,7 @@ __attribute__((objc_direct_members))
 
 @implementation EffectsItemModel
 
-- (instancetype)initWithType:(EffectsItemModelType)type {
+- (instancetype)initWithType:(EffectsItemModelType)type __attribute__((objc_direct)) {
     if (self = [super init]) {
         _type = type;
     }
@@ -57,6 +57,16 @@ __attribute__((objc_direct_members))
 
 - (NSUInteger)hash {
     return _type;
+}
+
+- (nonnull id)copyWithZone:(nullable NSZone *)zone {
+    EffectsItemModel *copy = [self.class new];
+    
+    if (copy) {
+        copy->_type = _type;
+    }
+    
+    return copy;
 }
 
 @end

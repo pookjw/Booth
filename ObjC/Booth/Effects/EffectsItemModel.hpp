@@ -34,7 +34,7 @@ typedef NS_ENUM(NSUInteger, EffectsItemModelType) {
 const std::set<EffectsItemModelType> allEffectsItemModelTypes();
 
 __attribute__((objc_direct_members))
-@interface EffectsItemModel : NSObject
+@interface EffectsItemModel : NSObject <NSCopying>
 @property (assign, readonly) EffectsItemModelType type;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;

@@ -34,7 +34,7 @@
 }
 
 - (void)setupEffectsView __attribute__((objc_direct)) {
-    EffectsView *effectsView = [[EffectsView alloc] initWithFrame:self.view.bounds];
+    EffectsView *effectsView = [[EffectsView alloc] initWithFrame:self.view.bounds layout:EffectsViewLayoutGrid];
     effectsView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:effectsView];
     self.effectsView = effectsView;

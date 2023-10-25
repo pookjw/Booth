@@ -21,6 +21,8 @@ EffectsViewModel::~EffectsViewModel() {
 }
 
 void EffectsViewModel::load(std::function<void ()> completionHandler) {
+    UICollectionViewDiffableDataSource<NSNumber *, EffectsItemModel *> *dataSource = _dataSource;
+    
     [_queue addOperationWithBlock:^{
         NSDiffableDataSourceSnapshot<NSNumber *, EffectsItemModel *> *snapshot = [NSDiffableDataSourceSnapshot<NSNumber *, EffectsItemModel *> new];
         
@@ -37,7 +39,7 @@ void EffectsViewModel::load(std::function<void ()> completionHandler) {
         [snapshot appendItemsWithIdentifiers:itemModels intoSectionWithIdentifier:@0];
         [itemModels release];
         
-        [_dataSource applySnapshot:snapshot animatingDifferences:YES completion:^{
+        [dataSource applySnapshot:snapshot animatingDifferences:YES completion:^{
             completionHandler();
         }];
         
