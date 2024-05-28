@@ -102,17 +102,22 @@ extension PixelBufferRenderView {
             // MARK: - Get Buffers
             
             let drawableSize: CGSize = drawable.layer.drawableSize
-            let ratioX: Float = Float(drawableSize.width) / Float(width)
-            let ratioY: Float = Float(drawableSize.height) / Float(height)
-            let scaleX: Float
-            let scaleY: Float
+            var scaleX: Float
+            var scaleY: Float
             if width < height {
                 scaleX = 1.0
-                scaleY = ratioX / ratioY
+                scaleY = Float(height) / Float(width)
             } else {
-                scaleX = ratioY / ratioX
+                scaleX = Float(width) / Float(height)
                 scaleY = 1.0
             }
+            
+            if drawableSize.width < drawableSize.height {
+                scaleX *= Float(drawableSize.height / drawableSize.width)
+            } else {
+                scaleY *= Float(drawableSize.width / drawableSize.height)
+            }
+            
             let vertexData: [Float] = [
                 -scaleX, -scaleY, 0.0, 1.0,
                 scaleX, -scaleY, 0.0, 1.0,

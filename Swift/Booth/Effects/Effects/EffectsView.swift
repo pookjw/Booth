@@ -124,14 +124,14 @@ final class EffectsView: UIView {
                     
                     let itemSize: NSCollectionLayoutSize = .init(
                         widthDimension: .fractionalWidth(.init(1.0 / count_f)),
-                        heightDimension: .fractionalHeight(1.0)
+                        heightDimension: .fractionalHeight(2.0)
                     )
                     
                     let item: NSCollectionLayoutItem = .init(layoutSize: itemSize)
                     
                     let groupSize: NSCollectionLayoutSize = .init(
                         widthDimension: .fractionalWidth(1.0),
-                        heightDimension: .fractionalWidth(.init(1.0 / count_f))
+                        heightDimension: .fractionalWidth(.init(2.0 / count_f))
                     )
                     
                     let group: NSCollectionLayoutGroup = .horizontal(layoutSize: groupSize, repeatingSubitem: item, count: count)
