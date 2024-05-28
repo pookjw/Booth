@@ -7,47 +7,38 @@
 
 #import "EffectsGridViewController.hpp"
 #import "EffectsView.hpp"
-#import "PixelBufferRenderView.hpp"
-#import <CoreMedia/CoreMedia.h>
 
 @interface EffectsGridViewController ()
-@property (retain) EffectsView *effectsView;
-@property (retain) PixelBufferRenderView *tmp_renderView;
+@property (retain, nonatomic) EffectsView *effectsView;
 @end
 
 @implementation EffectsGridViewController
 
 - (void)dealloc {
     [_effectsView release];
-    [_tmp_renderView release];
     [super dealloc];
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    [self setupEffectsView];
-    [self set_tmp_renderView];
+    [self setupAttributes];
+    [self setupEffectsView];
 }
 
-- (void)setupEffectsView {
-    EffectsView *effectsView = [[EffectsView alloc] initWithFrame:self.view.bounds];
+- (void)updatePixelBuffer:(CVPixelBufferRef)pixelBuffer __attribute__((objc_direct)) {
+    [self.effectsView updatePixelBuffer:pixelBuffer];
+}
+
+- (void)setupAttributes __attribute__((objc_direct)) {
+    self.view.backgroundColor = UIColor.clearColor;
+}
+
+- (void)setupEffectsView __attribute__((objc_direct)) {
+    EffectsView *effectsView = [[EffectsView alloc] initWithFrame:self.view.bounds layout:EffectsViewLayoutGrid];
     effectsView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:effectsView];
     self.effectsView = effectsView;
     [effectsView release];
-}
-
-- (void)set_tmp_renderView {
-    PixelBufferRenderView *tmp_renderView = [[PixelBufferRenderView alloc] initWithFrame:self.view.bounds];
-    tmp_renderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.view addSubview:tmp_renderView];
-    self.tmp_renderView = tmp_renderView;
-    [tmp_renderView release];
-}
-
-- (void)updateSampleBuffer:(CMSampleBufferRef)sampleBuffer {
-    CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-    [self.tmp_renderView updatePixelBuffer:pixelBuffer];
 }
 
 @end

@@ -14,6 +14,8 @@
 		4F228EAC2AE551DF00ABC029 /* UIWindowScene+interfaceOrientationDidChangeNotification.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F228EAB2AE551DF00ABC029 /* UIWindowScene+interfaceOrientationDidChangeNotification.mm */; };
 		4F228EC12AE572B000ABC029 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F228EC02AE572B000ABC029 /* CoreVideo.framework */; };
 		4F228EC32AE5739900ABC029 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F228EC22AE5739900ABC029 /* CoreMedia.framework */; };
+		4F3299202AE799F100E8EEF6 /* EffectsViewModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F32991E2AE799F100E8EEF6 /* EffectsViewModel.mm */; };
+		4F3299232AE79ADA00E8EEF6 /* EffectsItemModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F3299222AE79ADA00E8EEF6 /* EffectsItemModel.mm */; };
 		4F4FB05B2AE2BFC000E8BEB3 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4FB05A2AE2BFC000E8BEB3 /* AppDelegate.mm */; };
 		4F4FB05E2AE2BFC000E8BEB3 /* SceneDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4FB05D2AE2BFC000E8BEB3 /* SceneDelegate.mm */; };
 		4F4FB0612AE2BFC000E8BEB3 /* EffectsGridViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4FB0602AE2BFC000E8BEB3 /* EffectsGridViewController.mm */; };
@@ -24,6 +26,9 @@
 		4F4FB0792AE2C27F00E8BEB3 /* EffectsView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F4FB0782AE2C27F00E8BEB3 /* EffectsView.mm */; };
 		4F4FB07B2AE2C3DF00E8BEB3 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F4FB07A2AE2C3DF00E8BEB3 /* AVFoundation.framework */; };
 		4F4FB07D2AE2C3E400E8BEB3 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F4FB07C2AE2C3E400E8BEB3 /* MetalKit.framework */; };
+		4F9369092AE6B58000BE8E14 /* pixel_buffer_shader.metal in Sources */ = {isa = PBXBuildFile; fileRef = 4F9369082AE6B58000BE8E14 /* pixel_buffer_shader.metal */; };
+		4FC9079E2AE6C6CD0025AFCA /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FC9079D2AE6C6CC0025AFCA /* Metal.framework */; };
+		4FDDD5912AE953EF002514C6 /* EffectsContentView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4FDDD5902AE953EF002514C6 /* EffectsContentView.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +42,10 @@
 		4F228EAB2AE551DF00ABC029 /* UIWindowScene+interfaceOrientationDidChangeNotification.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "UIWindowScene+interfaceOrientationDidChangeNotification.mm"; sourceTree = "<group>"; };
 		4F228EC02AE572B000ABC029 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		4F228EC22AE5739900ABC029 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		4F32991E2AE799F100E8EEF6 /* EffectsViewModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EffectsViewModel.mm; sourceTree = "<group>"; };
+		4F32991F2AE799F100E8EEF6 /* EffectsViewModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EffectsViewModel.hpp; sourceTree = "<group>"; };
+		4F3299212AE79ADA00E8EEF6 /* EffectsItemModel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EffectsItemModel.hpp; sourceTree = "<group>"; };
+		4F3299222AE79ADA00E8EEF6 /* EffectsItemModel.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EffectsItemModel.mm; sourceTree = "<group>"; };
 		4F4FB0562AE2BFC000E8BEB3 /* Booth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Booth.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F4FB0592AE2BFC000E8BEB3 /* AppDelegate.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AppDelegate.hpp; sourceTree = "<group>"; };
 		4F4FB05A2AE2BFC000E8BEB3 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
@@ -53,6 +62,10 @@
 		4F4FB0782AE2C27F00E8BEB3 /* EffectsView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EffectsView.mm; sourceTree = "<group>"; };
 		4F4FB07A2AE2C3DF00E8BEB3 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		4F4FB07C2AE2C3E400E8BEB3 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		4F9369082AE6B58000BE8E14 /* pixel_buffer_shader.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = pixel_buffer_shader.metal; sourceTree = "<group>"; };
+		4FC9079D2AE6C6CC0025AFCA /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		4FDDD58F2AE953EF002514C6 /* EffectsContentView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EffectsContentView.hpp; sourceTree = "<group>"; };
+		4FDDD5902AE953EF002514C6 /* EffectsContentView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EffectsContentView.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +79,7 @@
 				4F4FB07B2AE2C3DF00E8BEB3 /* AVFoundation.framework in Frameworks */,
 				4F4FB0742AE2C13F00E8BEB3 /* UIKit.framework in Frameworks */,
 				4F228EC12AE572B000ABC029 /* CoreVideo.framework in Frameworks */,
+				4FC9079E2AE6C6CD0025AFCA /* Metal.framework in Frameworks */,
 				4F228EC32AE5739900ABC029 /* CoreMedia.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -107,6 +121,7 @@
 				4F228E6B2AE4146D00ABC029 /* CameraRootViewController.mm */,
 				4F228EA52AE5514800ABC029 /* PixelBufferRenderView.hpp */,
 				4F228EA62AE5514800ABC029 /* PixelBufferRenderView.mm */,
+				4F9369082AE6B58000BE8E14 /* pixel_buffer_shader.metal */,
 				4F4FB0752AE2C1C700E8BEB3 /* Effects */,
 			);
 			path = Booth;
@@ -115,6 +130,7 @@
 		4F4FB0722AE2C13F00E8BEB3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4FC9079D2AE6C6CC0025AFCA /* Metal.framework */,
 				4F228EC22AE5739900ABC029 /* CoreMedia.framework */,
 				4F228EC02AE572B000ABC029 /* CoreVideo.framework */,
 				4F228EA82AE551A800ABC029 /* QuartzCore.framework */,
@@ -132,6 +148,12 @@
 				4F4FB0762AE2C23900E8BEB3 /* Grid */,
 				4F4FB0772AE2C27F00E8BEB3 /* EffectsView.hpp */,
 				4F4FB0782AE2C27F00E8BEB3 /* EffectsView.mm */,
+				4F32991F2AE799F100E8EEF6 /* EffectsViewModel.hpp */,
+				4F32991E2AE799F100E8EEF6 /* EffectsViewModel.mm */,
+				4F3299212AE79ADA00E8EEF6 /* EffectsItemModel.hpp */,
+				4F3299222AE79ADA00E8EEF6 /* EffectsItemModel.mm */,
+				4FDDD58F2AE953EF002514C6 /* EffectsContentView.hpp */,
+				4FDDD5902AE953EF002514C6 /* EffectsContentView.mm */,
 			);
 			path = Effects;
 			sourceTree = "<group>";
@@ -217,9 +239,13 @@
 				4F4FB0792AE2C27F00E8BEB3 /* EffectsView.mm in Sources */,
 				4F228EA72AE5514800ABC029 /* PixelBufferRenderView.mm in Sources */,
 				4F4FB0612AE2BFC000E8BEB3 /* EffectsGridViewController.mm in Sources */,
+				4F3299232AE79ADA00E8EEF6 /* EffectsItemModel.mm in Sources */,
+				4F3299202AE799F100E8EEF6 /* EffectsViewModel.mm in Sources */,
+				4FDDD5912AE953EF002514C6 /* EffectsContentView.mm in Sources */,
 				4F4FB05B2AE2BFC000E8BEB3 /* AppDelegate.mm in Sources */,
 				4F228EAC2AE551DF00ABC029 /* UIWindowScene+interfaceOrientationDidChangeNotification.mm in Sources */,
 				4F4FB06C2AE2BFC100E8BEB3 /* main.mm in Sources */,
+				4F9369092AE6B58000BE8E14 /* pixel_buffer_shader.metal in Sources */,
 				4F228E6C2AE4146D00ABC029 /* CameraRootViewController.mm in Sources */,
 				4F4FB05E2AE2BFC000E8BEB3 /* SceneDelegate.mm in Sources */,
 			);

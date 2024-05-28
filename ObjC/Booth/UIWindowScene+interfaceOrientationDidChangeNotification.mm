@@ -14,7 +14,7 @@ namespace UIWindowScene_Booth_Category {
         static void (*original)(UIWindowScene *self, SEL _cmd, UIInterfaceOrientation interfaceOrientation, CGFloat animationDuration);
         static void custom(UIWindowScene *self, SEL _cmd, UIInterfaceOrientation interfaceOrientation, CGFloat animationDuration) {
             original(self, _cmd, interfaceOrientation, animationDuration);
-            [NSNotificationCenter.defaultCenter postNotificationName:UIWindowSceneInterfaceOrientationDidChangeNotification
+            [NSNotificationCenter.defaultCenter postNotificationName:UIWindowSceneInterfaceOrientationDidChangeNotificationName
                                                               object:self
                                                             userInfo:@{
                 UIWindowSceneInterfaceOrientationValueUserInfoKey: @(self.interfaceOrientation),

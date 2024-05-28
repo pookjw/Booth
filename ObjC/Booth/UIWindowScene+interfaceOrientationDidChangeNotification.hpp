@@ -9,7 +9,7 @@
 
 NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
-static NSNotificationName const UIWindowSceneInterfaceOrientationDidChangeNotification = @"UIWindowSceneInterfaceOrientationDidChangeNotification";
+static NSNotificationName const UIWindowSceneInterfaceOrientationDidChangeNotificationName = @"UIWindowSceneInterfaceOrientationDidChangeNotificationName";
 static NSString * const UIWindowSceneInterfaceOrientationValueUserInfoKey = @"UIWindowSceneInterfaceOrientationValueUserInfoKey";
 static NSString * const UIWindowSceneInterfaceOrientationAnimationDurationUserInfoKey = @"UIWindowSceneInterfaceOrientationAnimationDurationUserInfoKey";
 

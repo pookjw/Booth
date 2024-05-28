@@ -8,6 +8,7 @@
 #import "CameraRootViewController.hpp"
 #import "EffectsGridViewController.hpp"
 #import <AVFoundation/AVFoundation.h>
+#import <CoreMedia/CoreMedia.h>
 
 namespace ns_CameraRootViewController {
     void *devicesContext = &devicesContext;
@@ -87,6 +88,8 @@ __attribute__((objc_direct_members))
     UIBarButtonItem *captureBarButtonItem = [[UIBarButtonItem alloc] initWithPrimaryAction:primaryAction];
     [self setToolbarItems:@[captureBarButtonItem] animated:NO];
     [captureBarButtonItem release];
+    
+    self.view.backgroundColor = UIColor.systemBackgroundColor;
 }
 
 - (void)setupEffectsGridViewController __attribute__((objc_direct)) {
@@ -145,10 +148,15 @@ __attribute__((objc_direct_members))
                                                                                              DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     dispatch_queue_t videoSampleBufferQueue = dispatch_queue_create("com.pookjw.Booth.videoSampleBufferQueue", qosAttribute);
     
+    [[captureVideoDataOutput availableVideoCVPixelFormatTypes] enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        char buffer[5] = {0};
+        *(int *)&buffer[0] = CFSwapInt32HostToBig([obj intValue]);
+        NSLog(@"FORMAT: %s", buffer);
+    }];
     
     [captureVideoDataOutput setSampleBufferDelegate:self queue:videoSampleBufferQueue];
     captureVideoDataOutput.videoSettings = @{
-        
+        (id)kCVPixelBufferPixelFormatTypeKey: @(kCVPixelFormatType_32BGRA)
     };
     
     self.captureVideoDataOutput = captureVideoDataOutput;
@@ -184,11 +192,14 @@ __attribute__((objc_direct_members))
         if (error) {
             NSLog(@"%@", error);
             assert(!error);
+            return;
         }
         
         if (input) {
             [captureSession addInput:input];
         }
+        
+        [input release];
     }
     
     [captureSession commitConfiguration];
@@ -236,7 +247,8 @@ __attribute__((objc_direct_members))
 #pragma mark - AVCaptureVideoDataOutputSampleBufferDelegate
 
 - (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
-    [self.effectsGridViewController updateSampleBuffer:sampleBuffer];
+    CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+    [self.effectsGridViewController updatePixelBuffer:pixelBuffer];
 }
 
 @end
